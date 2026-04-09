@@ -1,0 +1,42 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+import os
+
+# 1. Load your new manifest
+csv_path = "./processed_urn/metadata.csv"
+df = pd.read_csv(csv_path)
+
+print(f"Total raw segments: {len(df)}")
+print(f"Total raw duration: {df['duration'].sum() / 3600:.2f} hours")
+
+# 2. CLEANING
+# Remove rows with empty text or 'xxx' (unintelligible)
+# We also remove extremely short clips (< 0.6s) which often cause training errors
+initial_count = len(df)
+df_clean = df[~df['text'].str.contains("xxx", na=False)]
+df_clean = df_clean[df_clean['text'].str.len() > 1] # Remove single characters like "a"
+df_clean = df_clean[df_clean['duration'] > 0.6] 
+
+lost = initial_count - len(df_clean)
+print(f"\nRemoved {lost} 'dirty' segments (xxx, too short, or empty).")
+print(f"Cleaned count: {len(df_clean)}")
+print(f"Cleaned duration: {df_clean['duration'].sum() / 3600:.2f} hours")
+
+# 3. SPLITTING (Standard 80% / 10% / 10%)
+# Train: The model learns from this
+# Val:   The model checks itself against this during training
+# Test:  We hide this until the very end to calculate the WER (Word Error Rate)
+train, test = train_test_split(df_clean, test_size=0.2, random_state=42)
+val, test = train_test_split(test, test_size=0.5, random_state=42)
+
+# 4. EXPORT
+train.to_csv("./processed_urn/train.csv", index=False)
+val.to_csv("./processed_urn/val.csv", index=False)
+test.to_csv("./processed_urn/test.csv", index=False)
+
+print("\n------------------------------------------------")
+print("READY FOR MACHINE LEARNING")
+print(f"Train Set: {len(train)} clips (Saved to ./processed_urn/train.csv)")
+print(f"Val Set:   {len(val)} clips   (Saved to ./processed_urn/val.csv)")
+print(f"Test Set:  {len(test)} clips  (Saved to ./processed_urn/test.csv)")
+print("------------------------------------------------")

@@ -1,0 +1,57 @@
+# ============================================================
+# Uruangnirin ASR - Python Dependencies
+# Compatible with: Python 3.12, PyTorch 2.10.0+cu128
+# ============================================================
+
+# NOTE: Install PyTorch FIRST with CUDA support:
+# pip install torch torchaudio --index-url https://download.pytorch.org/whl/cu128
+# OR with conda:
+# conda install pytorch torchvision torchaudio pytorch-cuda=12.8 -c pytorch -c nvidia
+
+# ----------------------------------------------------------
+# Hugging Face Ecosystem
+# ----------------------------------------------------------
+transformers>=4.45.0,<5.0.0
+datasets>=3.0.0,<4.0.0
+evaluate>=0.4.3,<0.5.0
+
+# ----------------------------------------------------------
+# Audio Processing
+# ----------------------------------------------------------
+librosa>=0.10.2,<0.11.0
+pydub>=0.25.1
+soundfile>=0.12.1
+
+# ----------------------------------------------------------
+# Data Manipulation & Utilities
+# ----------------------------------------------------------
+pandas>=2.2.0,<3.0.0
+numpy>=1.26.0,<2.0.0
+scikit-learn>=1.5.0,<2.0.0
+beautifulsoup4>=4.12.3,<5.0.0
+tqdm>=4.66.0,<5.0.0
+
+# ----------------------------------------------------------
+# CTC Decoding with Language Model
+# ----------------------------------------------------------
+pyctcdecode>=0.5.0,<0.6.0
+kenlm @ git+https://github.com/kpu/kenlm.git@master
+
+# ----------------------------------------------------------
+# Optional Dependencies (uncomment as needed)
+# ----------------------------------------------------------
+# openai-whisper>=20231117  # For Whisper model utilities
+
+# ----------------------------------------------------------
+# External Dependencies (NOT in this file)
+# ----------------------------------------------------------
+# CLAP-IPA: Must be installed separately from:
+# https://github.com/Maen1/clap-ipa/tree/fix-dependency-versions
+# 
+# Setup instructions:
+#   cd ..
+#   git clone https://github.com/Maen1/clap-ipa.git
+#   cd clap-ipa
+#   git checkout fix-dependency-versions
+#   pip install -e .
+#   cd ../automatic-speech-transcription-uruangnirin
