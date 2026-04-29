@@ -275,7 +275,7 @@ python scripts/vocabulary_corpus/create_mms_vocab.py
 
 #### For Language Model (Optional, improves MMS accuracy):
 ```bash
-python scripts/vocabulary_corpus/build_corpus.py
+python scripts/data_preparation/extract_dictionary.py
 ```
 
 **What it does:**
